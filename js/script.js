@@ -37,17 +37,10 @@ function computeEquation(string) {
         ans = ansArr.join('');
     }
 
-    // TODO: Overflow of elements css in result
+    // handle overflow
     if (ans.length > 12) {
-        if (!ans.includes('e')) {
-            if (ans.includes('.')) {
-                
-            } else {
-
-            }
-        } else {
-
-        }
+        if (!ans.includes('e')) ans = Number(ans).toExponential(5);
+        if (ans.length > 12) ans = Number(ans).toExponential(1);
     }
     console.log(`Operation performed: ${string} = ${ans}`);
 
