@@ -30,6 +30,7 @@ body {
     background-image: url('../img/math_meme.png');
     background-size: cover;
     background-position: center; 
+    box-shadow: inset 0px 0px 100px 50px black;
     z-index: 1;
 }
 
