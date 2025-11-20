@@ -1,6 +1,7 @@
 function computeEquation(string) {
     // TODO: Logic for invalid
     // TODO: Logic for rounding off
+    // TODO: Overflow of elements css
     let ans = 0;
     let arr = string.split(' ');
     let num1 = Number(arr[0]);
