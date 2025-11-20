@@ -1,5 +1,16 @@
+function isInvalidBottom() {
+    if (displayBottom === 'NaN' || displayBottom === 'Infinity') return true;
+}
+
+function isBlankBottom() {
+    return !(displayBottom.textContent);
+}
+
+function isBlankTop() {
+    return !(displayTop.textContent);
+}
+
 function computeEquation(string) {
-    // TODO: Logic for invalid
     let ans = 0;
     let arr = string.split(' ');
     let num1 = Number(arr[0]);
@@ -46,14 +57,13 @@ const operationBtn = document.querySelectorAll(".operation");
 const pointBtn = document.querySelector(".point");
 const equalBtn = document.querySelector(".equal");
 
-const operations = ['+', '-', '%', '×'];
-
 clearBtn.addEventListener('click', () => {
     displayTop.textContent = '';
     displayBottom.textContent = '';
 });
 
 deleteBtn.addEventListener('click', () => {
+    if (isInvalidBottom()) displayBottom.textContent = '';
     let arr = displayBottom.textContent.split('');
     arr.pop();
     displayBottom.textContent = arr.join('');;
@@ -61,6 +71,7 @@ deleteBtn.addEventListener('click', () => {
 
 numberBtn.forEach((btn) => {
     btn.addEventListener('click', () => {
+        if (isInvalidBottom()) displayBottom.textContent = '';
         if (displayBottom.textContent.length < 12) {
             displayBottom.textContent = `${displayBottom.textContent}` + btn.textContent; 
         }
@@ -68,6 +79,7 @@ numberBtn.forEach((btn) => {
 });
 
 pointBtn.addEventListener('click', () => {
+    if (isInvalidBottom()) displayBottom.textContent = '';
     if (!displayBottom.textContent.includes('.') &&
         displayBottom.textContent.length < 12) {
         displayBottom.textContent = `${displayBottom.textContent}.`;
@@ -77,10 +89,10 @@ pointBtn.addEventListener('click', () => {
 operationBtn.forEach((btn) => {
     btn.addEventListener('click', () => {
         // does nothing if display is empty
-        if (displayBottom.textContent || displayTop.textContent) {
+        if (!isBlankBottom() || !isBlankTop()) {
 
             // remove leading zeroes and copy displayBottom to displayTop
-            if (!displayTop.textContent) {
+            if (isBlankTop()) {
                 let arr = displayBottom.textContent.split('');
                 while (arr[0] === '0') {
                     arr.splice(0, 1);
@@ -92,14 +104,14 @@ operationBtn.forEach((btn) => {
                 displayBottom.textContent = '';
 
             // update displayTop's operation
-            } else if (!displayBottom.textContent) {
+            } else if (isBlankBottom()) {
                 let arr = displayTop.textContent.split('');
                 arr.pop();
                 arr.push(btn.textContent);;
                 displayTop.textContent = arr.join('');
 
             // compute and update displayTop
-            } else if (displayTop.textContent && displayBottom.textContent) {
+            } else if (!isBlankTop() && !isBlankBottom()) {
                 let equation = `${displayTop.textContent} ${displayBottom.textContent}`;
                 displayTop.textContent = `${computeEquation(equation)} ${btn.textContent}`;
                 displayBottom.textContent = '';
@@ -109,7 +121,7 @@ operationBtn.forEach((btn) => {
 });
 
 equalBtn.addEventListener('click', () => {
-    if (displayTop.textContent && displayBottom.textContent){
+    if (!isBlankTop() && !isBlankBottom()){
         let equation = `${displayTop.textContent} ${displayBottom.textContent}`;
         displayBottom.textContent = computeEquation(equation);
         displayTop.textContent = '';
