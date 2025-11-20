@@ -1,5 +1,8 @@
 function isInvalidBottom() {
-    if (displayBottom === 'NaN' || displayBottom === 'Infinity') return true;
+    if (displayBottom.textContent === 'NaN' || 
+        displayBottom.textContent === 'Infinity' ||
+        displayBottom.textContent === 'NOOOOOOO'
+    ) return true;
 }
 
 function isBlankBottom() {
@@ -20,7 +23,10 @@ function computeEquation(string) {
     // perform operation and round to 6 decimal places
     if (operation === "+") ans = (num1 + num2).toFixed(6);
     else if (operation === "-") ans = (num1 - num2).toFixed(6);
-    else if (operation === "%") ans = (num1 / num2).toFixed(6);
+    else if (operation === "%") {
+        if (num2 === 0) return "NOOOOOOO";
+        ans = (num1 / num2).toFixed(6);
+    }
     else if (operation === "×") ans = (num1 * num2).toFixed(6);
 
     // remove trailing zeroes at the end of decimal
